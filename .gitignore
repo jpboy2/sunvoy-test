@@ -7,3 +7,8 @@ node_modules/
 
 # VSCode settings
 .vscode/ 
+
+# Data files
+src/data/*
+# Output files
+src/outputs/*
