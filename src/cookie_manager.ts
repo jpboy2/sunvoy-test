@@ -1,7 +1,13 @@
 import fs from "fs";
-import { COOKIE_FILE_PATH } from "./constant";
+import { COOKIE_FILE_PATH, DATA_FOLDER_PATH } from "./constant";
 
 export const saveCookies = (cookies: string[]) => {
+  // Check if the data directory exists, if not create it
+  if (!fs.existsSync(DATA_FOLDER_PATH)) {
+    fs.mkdirSync(DATA_FOLDER_PATH, { recursive: true });
+    console.log(`Created data directory: ${DATA_FOLDER_PATH}`);
+  }
+
   fs.writeFileSync(COOKIE_FILE_PATH, JSON.stringify(cookies, null, 2), "utf8");
 };
 

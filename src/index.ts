@@ -2,11 +2,20 @@
 import fs from "fs";
 import { JSDOM } from "jsdom";
 
-import { LOGIN_URL, PASSWORD, SETTINGS_API_URL, TOKEN_URL, USER_API_URL, USER_OUTPUT_FILE, USERNAME } from "./constant";
 import axiosClient from "./client";
-import { TokenResponse } from "./types";
 import { encryptBody } from "./common";
+import {
+  LOGIN_URL,
+  OUTPUT_FOLDER_PATH,
+  PASSWORD,
+  SETTINGS_API_URL,
+  TOKEN_URL,
+  USER_API_URL,
+  USER_OUTPUT_FILE_PATH,
+  USERNAME,
+} from "./constant";
 import { loadCookies, saveCookies } from "./cookie_manager";
+import { TokenResponse } from "./types";
 
 async function loginUser() {
   try {
@@ -70,8 +79,14 @@ async function fetchUsersAndSaveToFile() {
     const res = await axiosClient.post(USER_API_URL);
     const users = res.data;
 
+    // Check if the output directory exists, if not create it
+    if (!fs.existsSync(OUTPUT_FOLDER_PATH)) {
+      fs.mkdirSync(OUTPUT_FOLDER_PATH, { recursive: true });
+      console.log(`Created outputs directory: ${OUTPUT_FOLDER_PATH}`);
+    }
+
     // Save the users to a JSON file
-    fs.writeFileSync(USER_OUTPUT_FILE, JSON.stringify(users, null, 2), "utf-8");
+    fs.writeFileSync(USER_OUTPUT_FILE_PATH, JSON.stringify(users, null, 2), "utf-8");
     console.log(`Users saved successfully!`);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -127,11 +142,11 @@ async function appendLoggedInUserToFile() {
     );
     const userInformation = res.data;
 
-    const users = fs.readFileSync(USER_OUTPUT_FILE, "utf-8");
+    const users = fs.readFileSync(USER_OUTPUT_FILE_PATH, "utf-8");
     const usersArray = JSON.parse(users || "[]");
     usersArray.push(userInformation);
 
-    fs.writeFileSync(USER_OUTPUT_FILE, JSON.stringify(usersArray, null, 2), "utf-8");
+    fs.writeFileSync(USER_OUTPUT_FILE_PATH, JSON.stringify(usersArray, null, 2), "utf-8");
 
     console.log("Logged-in user information appended successfully!");
   } catch (error) {
