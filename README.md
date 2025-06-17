@@ -16,4 +16,4 @@ npm install
 
 ## Loom Demo
 
-Watch the demo on Loom: []()
+Watch the demo on Loom: [https://www.loom.com/share/0b649bb0266c41579faec5b39e743d93?sid=a120f23c-3b9c-4c1b-ab56-3a2bf7f54248](https://www.loom.com/share/0b649bb0266c41579faec5b39e743d93?sid=a120f23c-3b9c-4c1b-ab56-3a2bf7f54248)
